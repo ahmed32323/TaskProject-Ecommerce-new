@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -19,24 +21,10 @@ class CategoryController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('categories.create');
-    }
-
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:categories,slug',
-        ]);
-
         Category::create($request->only('name', 'slug'));
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -44,32 +32,10 @@ class CategoryController extends Controller
 
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        return view('categories.show', compact('category'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        return view('categories.edit', compact('category'));
-    }
-
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:categories,slug,' . $category->id,
-        ]);
-
         $category->update($request->only('name', 'slug'));
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');

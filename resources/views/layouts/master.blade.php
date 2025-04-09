@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -220,7 +221,8 @@
             letter-spacing: 0.03em;
         }
 
-        .table td, .table th {
+        .table td,
+        .table th {
             vertical-align: middle;
             padding: 0.75rem;
             border-top: 1px solid #e3e6f0;
@@ -280,8 +282,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* Responsive */
@@ -333,6 +340,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
@@ -340,23 +348,6 @@
             <div class="sidebar-brand">
                 <h2><i class="bi bi-speedometer2"></i> <span>Admin Panel</span></h2>
             </div>
-
-            <div class="sidebar-divider"></div>
-
-            <div class="sidebar-heading">
-                Main
-            </div>
-
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }}">
-                        <i class="bi bi-house-door"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-            </ul>
-
-            <div class="sidebar-divider"></div>
 
             <div class="sidebar-heading">
                 Catalog
@@ -508,17 +499,17 @@
             <div class="content fade-in">
                 <!-- Alert Messages -->
                 @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-circle me-2"></i>
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @elseif(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @endif
 
                 <!-- Page Header -->
@@ -526,6 +517,19 @@
                     <h1 class="h3 mb-0 text-gray-800">@yield('page-header', 'Dashboard')</h1>
                     @yield('page-actions')
                 </div>
+
+                @if ($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Whoops!</strong> There were some problems with your input:
+        <ul class="mb-0 mt-1">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 
                 <!-- Main Content -->
                 @yield('content')
@@ -586,4 +590,5 @@
     </script>
     @stack('scripts')
 </body>
+
 </html>

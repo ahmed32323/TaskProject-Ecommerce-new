@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -23,47 +25,18 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:products,slug',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'categories' => 'array',
-            'categories.*' => 'exists:categories,id',
-        ]);
-
         $product = Product::create($request->only('title', 'slug', 'price', 'description'));
         $product->categories()->attach($request->categories);
 
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
+    // update the product
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        return view('products.show', compact('product'));
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:products,slug,' . $product->id,
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'categories' => 'array',
-            'categories.*' => 'exists:categories,id',
-        ]);
-
         $product->update($request->only('title', 'slug', 'price', 'description'));
         $product->categories()->sync($request->categories);
 
@@ -79,5 +52,4 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
-
 }
