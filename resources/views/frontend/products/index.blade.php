@@ -23,7 +23,7 @@
 <div class="row mb-4">
     <div class="col-md-8">
         <h2 class="fw-bold">Our Products</h2>
-        <p class="text-muted">Showing all {{ count($products) }} products</p>
+        <p class="text-muted">Showing all {{ $products->total() }} products</p>
     </div>
     <div class="col-md-4">
         <div class="d-flex justify-content-md-end align-items-center h-100">
@@ -172,16 +172,18 @@
         <div class="mt-5 d-flex justify-content-center">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
+                    <li class="page-item {{ $products->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                    @for($i = 1; $i <= $products->lastPage(); $i++)
+                        <li class="page-item {{ $i == $products->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    <li class="page-item {{ $products->hasMorePages() ? '' : 'disabled' }}">
+                        <a class="page-link" href="{{ $products->nextPageUrl() }}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

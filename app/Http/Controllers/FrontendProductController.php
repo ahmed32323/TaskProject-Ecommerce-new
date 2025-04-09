@@ -11,10 +11,12 @@ class FrontendProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('categories')->get();
-        $categories = Category::all();  // Get all categories from the database
+        $products = Product::with('categories')->paginate(9); // Paginate 9 per page
+        $categories = Category::all();
+
         return view('frontend.products.index', compact('products', 'categories'));
     }
+
 
 
     public function show(Product $product)
