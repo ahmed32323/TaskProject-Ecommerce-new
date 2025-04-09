@@ -304,6 +304,8 @@
 
                 <!-- Show Logout if user is authenticated -->
                 @auth
+                <a href="{{ route('products.index') }}" class="btn btn-primary me-2"><i class="fas fa-user-plus me-1"></i>Dashboard</a>
+
                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-danger me-2"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>

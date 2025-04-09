@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// Backend(admin panel) routes
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', ProductController::class);
