@@ -16,7 +16,6 @@
                     <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-home me-1"></i> Home</a>
                 </li>
             </ul>
-
             <div class="d-flex ms-lg-3">
                 <!-- Show Login and Register if user is not authenticated -->
                 @guest
