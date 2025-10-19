@@ -5,7 +5,7 @@
 @section('hero')
 <section class="hero-section">
     <div class="container text-center">
-        <h1 data-aos="fade-up" class="display-4 fw-bold">Project Deployed on AWS</h1>
+        <h1 data-aos="fade-up" class="display-4 fw-bold">compilex technology</h1>
         <p data-aos="fade-up" data-aos-delay="100" class="lead">Explore our curated selection of high-quality products</p>
         <div data-aos="fade-up" data-aos-delay="200" class="d-flex justify-content-center mt-4">
             <form class="d-flex position-relative w-75">
