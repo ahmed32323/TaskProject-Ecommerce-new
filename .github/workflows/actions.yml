@@ -1,0 +1,50 @@
+name: Deploy Laravel App to EC2
+
+on:
+  push:
+    branches:
+      - main   # Trigger only when code is pushed to main branch
+
+jobs:
+  deploy:
+    name:  Deploy to AWS EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name:  Checkout repository
+        uses: actions/checkout@v4
+
+      - name:  Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, xml, ctype, json, curl, zip, mysql
+          coverage: none
+
+      - name:  Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name:  Run Laravel tests (optional)
+        run: php artisan test
+        continue-on-error: true
+
+      - name:  Prepare deployment package
+        run: |
+          zip -r deploy.zip . -x "*.git*" "vendor/*" "node_modules/*"
+
+      - name: 🔐 SSH into EC2 and deploy
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /var/www/TaskProject-Ecommerce
+            git pull origin main || echo "Repo not initialized, skipping pull"
+            rm -rf vendor bootstrap/cache/*
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            sudo systemctl restart apache2 || sudo systemctl restart nginx
