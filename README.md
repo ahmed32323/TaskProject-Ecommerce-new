@@ -43,8 +43,8 @@ This project is a **Laravel-based full-stack E-commerce web application** deploy
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd TaskProject-Ecommerce
+git https://github.com/ahmed32323/TaskProject-Ecommerce-new.git
+cd TaskProject-Ecommerce-new
 ```
 
 ### 2. Install dependencies
@@ -64,14 +64,14 @@ APP_NAME=TaskProjectEcommerce
 APP_ENV=production
 APP_KEY=base64:...
 APP_DEBUG=false
-APP_URL=http://<EC2-public-IP>
+APP_URL=http://13.61.206.95/
 
 DB_CONNECTION=mysql
-DB_HOST=<DB_HOST>
+DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=<DB_NAME>
-DB_USERNAME=<DB_USER>
-DB_PASSWORD=<DB_PASSWORD>
+DB_DATABASE=laravel_db
+DB_USERNAME=laracel_user
+DB_PASSWORD=Hanz1234!
 
 AWS_REGION=eu-north-1
 ```
@@ -82,24 +82,14 @@ AWS_REGION=eu-north-1
 php artisan key:generate
 ```
 
-### 5. Run migrations and seeders
 
-```bash
-php artisan migrate --seed
-```
-
-### 6. Start the application
-
-```bash
-php artisan serve --host=0.0.0.0 --port=8000
-```
 
 ### 7. Access the application
 
 Open in browser:
 
 ```
-http://<EC2-instance-public-ip>:8000
+{  http://13.61.206.95/ }
 ```
 
 ---
@@ -152,13 +142,26 @@ sudo systemctl status snap.amazon-ssm-agent.amazon-ssm-agent.service
 5. Create a Pull Request
 
 ---
-
-## License
-
-[Specify your license, e.g., MIT]
-
----
-
-I can also **add a diagram showing EC2, SSM, CloudWatch, and your Laravel app workflow** to make this README more professional and visually descriptive.
-
 Do you want me to add that diagram?
+
++------------------+       Push Code       +------------------+
+|  Local VS Code   | ------------------>  |    GitHub Repo    |
+|  Developer writes|                        |  (GitHub Actions)|
+|  code commits    |                        +------------------+
++------------------+                               |
+                                                    | Trigger CI/CD
+                                                    v
+                                           +------------------+
+                                           | CI/CD Pipeline    |
+                                           | - Run Tests       |
+                                           | - Build Project   |
+                                           | - Package App     |
+                                           +------------------+
+                                                    |
+                                                    v
+                                           +------------------+
+                                           |  AWS EC2 Server   |
+                                           | - Deploy Laravel  |
+                                           |   Application     |
+                                           +------------------+
+
